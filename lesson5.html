@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 5 - Actions and Verbs</title>
+    <link rel="stylesheet" href="styleslevels.css">
+</head>
+<body>
+
+    <!-- Level 5 Header -->
+    <div class="level-header">
+        <h2>Actions and Verbs in Sign Language</h2>
+    </div>
+
+    <!-- Word/Verb Display at the Top -->
+    <div class="word-display" id="word-display">
+        <h1 id="word">Walk</h1>
+    </div>
+
+    <!-- Learning Mode Section -->
+    <div class="video-container" id="learning-mode">
+        <video id="sign-video" controls>
+            <source src="videos/walk.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <!-- Quiz Mode Section (Initially Hidden) -->
+    <div class="quiz-container" id="quiz-mode" style="display: none;">
+        <h2>What phrase is this?</h2>
+        <video id="quiz-video" controls>
+            <source src="" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="options">
+            <button class="option-btn" onclick="checkAnswer(this)"></button>
+            <button class="option-btn" onclick="checkAnswer(this)"></button>
+            <button class="option-btn" onclick="checkAnswer(this)"></button>
+            <button class="option-btn" onclick="checkAnswer(this)"></button>
+        </div>
+        <p id="quiz-result"></p>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="nav-buttons">
+        <button id="prev-btn">←</button>
+        <button id="next-btn">→</button>
+    </div>
+
+    <script src="script5.js"></script>
+</body>
+</html>

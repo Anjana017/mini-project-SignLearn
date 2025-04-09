@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 2: Greetings and Introductions</title>
+    <link rel="stylesheet" href="stylesquiz.css">
+</head>
+<body>
+
+    <!-- Exercise Header -->
+    <div class="header">
+        <h1>Exercise 2: Greetings and Introductions</h1>
+    </div>
+
+    <!-- Questions Container -->
+    <div class="questions-container">
+        <!-- Questions will be dynamically inserted here -->
+    </div>
+
+    <!-- Submit Button -->
+    <button id="submit-btn">Submit</button>
+
+    <!-- Results Display -->
+    <div id="results" style="display: none;">
+        <h2>Your Score: <span id="score"></span>/15</h2>
+        <p id="feedback"></p>
+    </div>
+
+    <script>
+        // Questions for Exercise 2: Greetings and Introductions
+        const questions = [
+            // MCQ Questions
+            { type: "mcq", question: "What is the sign for 'Hello'?", options: ["hello.mp4", "goodbye.mp4", "thank_you.mp4", "sorry.mp4"], answer: "hello.mp4" },
+            { type: "mcq", question: "What is the sign for 'Goodbye'?", options: ["hello.mp4", "goodbye.mp4", "thank_you.mp4", "sorry.mp4"], answer: "goodbye.mp4" },
+            { type: "mcq", question: "What is the sign for 'Thank you'?", options: ["hello.mp4", "goodbye.mp4", "thank_you.mp4", "sorry.mp4"], answer: "thank_you.mp4" },
+            { type: "mcq", question: "What is the sign for 'Good morning'?", options: ["good_morning.mp4", "good_afternoon.mp4", "good_evening.mp4", "good_night.mp4"], answer: "good_morning.mp4" },
+            { type: "mcq", question: "What is the sign for 'Good afternoon'?", options: ["good_morning.mp4", "good_afternoon.mp4", "good_evening.mp4", "good_night.mp4"], answer: "good_afternoon.mp4" },
+            { type: "mcq", question: "What is the sign for 'Good evening'?", options: ["good_morning.mp4", "good_afternoon.mp4", "good_evening.mp4", "good_night.mp4"], answer: "good_evening.mp4" },
+            { type: "mcq", question: "What is the sign for 'Good night'?", options: ["good_morning.mp4", "good_afternoon.mp4", "good_evening.mp4", "good_night.mp4"], answer: "good_night.mp4" },
+            { type: "mcq", question: "What is the sign for 'Please'?", options: ["please.mp4", "thank_you.mp4", "youre_welcome.mp4", "excuse_me_sorry.mp4"], answer: "please.mp4" },
+            { type: "mcq", question: "What is the sign for 'You're welcome'?", options: ["please.mp4", "thank_you.mp4", "youre_welcome.mp4", "excuse_me_sorry.mp4"], answer: "youre_welcome.mp4" },
+            { type: "mcq", question: "What is the sign for 'Excuse me / Sorry'?", options: ["please.mp4", "thank_you.mp4", "youre_welcome.mp4", "excuse_me_sorry.mp4"], answer: "excuse_me_sorry.mp4" },
+
+            // Fill-in-the-Blank Questions
+            { type: "fill", question: "What is this sign?", video: "videos/nice_to_meet_you.mp4", answer: "Nice to meet you" },
+            { type: "fill", question: "What is this sign?", video: "videos/my_name_is.mp4", answer: "My name is" },
+            { type: "fill", question: "What is this sign?", video: "videos/whats_your_name.mp4", answer: "What’s your name" },
+            { type: "fill", question: "What is this sign?", video: "videos/i_dont_understand.mp4", answer: "I don’t understand" },
+            { type: "fill", question: "What is this sign?", video: "videos/can_you_sign_that_again.mp4", answer: "Can you sign that again" }
+        ];
+
+        const questionsContainer = document.querySelector(".questions-container");
+        const submitBtn = document.getElementById("submit-btn");
+        const resultsDiv = document.getElementById("results");
+        const scoreSpan = document.getElementById("score");
+        const feedbackPara = document.getElementById("feedback");
+
+ // Function to render questions
+function renderQuestions() {
+    questions.forEach((q, index) => {
+        const questionDiv = document.createElement("div");
+        questionDiv.className = "question";
+
+        const questionText = document.createElement("p");
+        questionText.textContent = `${index + 1}. ${q.question}`;
+        questionDiv.appendChild(questionText);
+
+        if (q.type === "mcq") {
+            q.options.forEach(option => {
+                const optionLabel = document.createElement("label");
+                const optionInput = document.createElement("input");
+                optionInput.type = "radio";
+                optionInput.name = `question${index}`;
+                optionInput.value = option;
+
+                // Add video for MCQ options with updated size
+                const optionVideo = document.createElement("video");
+                optionVideo.src = `videos/${option}`;
+                optionVideo.className = "mcq-video"; // Added class for styling
+                optionVideo.controls = true;
+
+                optionLabel.appendChild(optionInput);
+                optionLabel.appendChild(optionVideo);
+                questionDiv.appendChild(optionLabel);
+            });
+        } else if (q.type === "fill") {
+            // Add video for fill-in-the-blank questions with updated size
+            const questionVideo = document.createElement("video");
+            questionVideo.src = q.video;
+            questionVideo.className = "fill-video"; // Added class for styling
+            questionVideo.controls = true;
+
+            questionDiv.appendChild(questionVideo);
+
+            // Add input field for user's answer
+            const input = document.createElement("input");
+            input.type = "text";
+            input.name = `question${index}`;
+            input.placeholder = "Type your answer here";
+            questionDiv.appendChild(input);
+        }
+
+        questionsContainer.appendChild(questionDiv);
+    });
+}
+
+
+        // Function to calculate score
+        function calculateScore() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                if (q.type === "mcq") {
+                    // For MCQ questions, get the selected radio button value
+                    const userAnswer = document.querySelector(`input[name="question${index}"]:checked`)?.value;
+                    if (userAnswer === q.answer) {
+                        score++;
+                    }
+                } else if (q.type === "fill") {
+                    // For fill-in-the-blank questions, get the input value and trim whitespace
+                    const userAnswer = document.querySelector(`input[name="question${index}"]`)?.value.trim().toUpperCase();
+                    if (userAnswer === q.answer.toUpperCase()) {
+                        score++;
+                    }
+                }
+            });
+            return score;
+        }
+
+        // Event listener for submit button
+        submitBtn.addEventListener("click", () => {
+            const score = calculateScore();
+            scoreSpan.textContent = score;
+            feedbackPara.textContent = score >= 10 ? "Great job! Keep practicing!" : "Good effort! Try again!";
+            resultsDiv.style.display = "block";
+        });
+
+        // Render questions on page load
+        renderQuestions();
+    </script>
+
+</body>
+</html>

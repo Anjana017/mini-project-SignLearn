@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 3: Common Everyday Words</title>
+    <link rel="stylesheet" href="stylesquiz.css">
+</head>
+<body>
+
+    <!-- Exercise Header -->
+    <div class="header">
+        <h1>Exercise 3: Common Everyday Words</h1>
+    </div>
+
+    <!-- Questions Container -->
+    <div class="questions-container">
+        <!-- Questions will be dynamically inserted here -->
+    </div>
+
+    <!-- Submit Button -->
+    <button id="submit-btn">Submit</button>
+
+    <!-- Results Display -->
+    <div id="results" style="display: none;">
+        <h2>Your Score: <span id="score"></span>/15</h2>
+        <p id="feedback"></p>
+    </div>
+
+    <script>
+        // Questions for Exercise 3: Common Everyday Words
+        const questions = [
+            // MCQ Questions
+            { type: "mcq", question: "What is the sign for 'Mother'?", options: ["mother.mp4", "father.mp4", "sister.mp4", "brother.mp4"], answer: "mother.mp4" },
+            { type: "mcq", question: "What is the sign for 'Father'?", options: ["mother.mp4", "father.mp4", "sister.mp4", "brother.mp4"], answer: "father.mp4" },
+            { type: "mcq", question: "What is the sign for 'Sister'?", options: ["mother.mp4", "father.mp4", "sister.mp4", "brother.mp4"], answer: "sister.mp4" },
+            { type: "mcq", question: "What is the sign for 'Brother'?", options: ["mother.mp4", "father.mp4", "sister.mp4", "brother.mp4"], answer: "brother.mp4" },
+            { type: "mcq", question: "What is the sign for 'Friend'?", options: ["friend.mp4", "best_friend.mp4", "neighbor.mp4", "home.mp4"], answer: "friend.mp4" },
+            { type: "mcq", question: "What is the sign for 'Best Friend'?", options: ["friend.mp4", "best_friend.mp4", "neighbor.mp4", "home.mp4"], answer: "best_friend.mp4" },
+            { type: "mcq", question: "What is the sign for 'Neighbor'?", options: ["friend.mp4", "best_friend.mp4", "neighbor.mp4", "home.mp4"], answer: "neighbor.mp4" },
+            { type: "mcq", question: "What is the sign for 'Home'?", options: ["home.mp4", "school.mp4", "park.mp4", "store.mp4"], answer: "home.mp4" },
+            { type: "mcq", question: "What is the sign for 'School'?", options: ["home.mp4", "school.mp4", "park.mp4", "store.mp4"], answer: "school.mp4" },
+            { type: "mcq", question: "What is the sign for 'Park'?", options: ["home.mp4", "school.mp4", "park.mp4", "store.mp4"], answer: "park.mp4" },
+
+            // Fill-in-the-Blank Questions
+            { type: "fill", question: "What is this sign?", video: "videos/store.mp4", answer: "Store" },
+            { type: "fill", question: "What is this sign?", video: "videos/red.mp4", answer: "Red" },
+            { type: "fill", question: "What is this sign?", video: "videos/blue.mp4", answer: "Blue" },
+            { type: "fill", question: "What is this sign?", video: "videos/green.mp4", answer: "Green" },
+            { type: "fill", question: "What is this sign?", video: "videos/yellow.mp4", answer: "Yellow" }
+        ];
+
+        const questionsContainer = document.querySelector(".questions-container");
+        const submitBtn = document.getElementById("submit-btn");
+        const resultsDiv = document.getElementById("results");
+        const scoreSpan = document.getElementById("score");
+        const feedbackPara = document.getElementById("feedback");
+
+      // Function to render questions
+function renderQuestions() {
+    questions.forEach((q, index) => {
+        const questionDiv = document.createElement("div");
+        questionDiv.className = "question";
+
+        const questionText = document.createElement("p");
+        questionText.textContent = `${index + 1}. ${q.question}`;
+        questionDiv.appendChild(questionText);
+
+        if (q.type === "mcq") {
+            q.options.forEach(option => {
+                const optionLabel = document.createElement("label");
+                const optionInput = document.createElement("input");
+                optionInput.type = "radio";
+                optionInput.name = `question${index}`;
+                optionInput.value = option;
+
+                // Add video for MCQ options with updated size
+                const optionVideo = document.createElement("video");
+                optionVideo.src = `videos/${option}`;
+                optionVideo.className = "mcq-video"; // Added class for styling
+                optionVideo.controls = true;
+
+                optionLabel.appendChild(optionInput);
+                optionLabel.appendChild(optionVideo);
+                questionDiv.appendChild(optionLabel);
+            });
+        } else if (q.type === "fill") {
+            // Add video for fill-in-the-blank questions with updated size
+            const questionVideo = document.createElement("video");
+            questionVideo.src = q.video;
+            questionVideo.className = "fill-video"; // Added class for styling
+            questionVideo.controls = true;
+
+            questionDiv.appendChild(questionVideo);
+
+            // Add input field for user's answer
+            const input = document.createElement("input");
+            input.type = "text";
+            input.name = `question${index}`;
+            input.placeholder = "Type your answer here";
+            questionDiv.appendChild(input);
+        }
+
+        questionsContainer.appendChild(questionDiv);
+    });
+}
+
+        // Function to calculate score
+        function calculateScore() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                if (q.type === "mcq") {
+                    // For MCQ questions, get the selected radio button value
+                    const userAnswer = document.querySelector(`input[name="question${index}"]:checked`)?.value;
+                    if (userAnswer === q.answer) {
+                        score++;
+                    }
+                } else if (q.type === "fill") {
+                    // For fill-in-the-blank questions, get the input value and trim whitespace
+                    const userAnswer = document.querySelector(`input[name="question${index}"]`)?.value.trim().toUpperCase();
+                    if (userAnswer === q.answer.toUpperCase()) {
+                        score++;
+                    }
+                }
+            });
+            return score;
+        }
+
+        // Event listener for submit button
+        submitBtn.addEventListener("click", () => {
+            const score = calculateScore();
+            scoreSpan.textContent = score;
+            feedbackPara.textContent = score >= 10 ? "Great job! Keep practicing!" : "Good effort! Try again!";
+            resultsDiv.style.display = "block";
+        });
+
+        // Render questions on page load
+        renderQuestions();
+    </script>
+
+</body>
+</html>

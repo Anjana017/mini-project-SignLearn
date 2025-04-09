@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 1: Alphabets and Numbers</title>
+    <link rel="stylesheet" href="stylesquiz.css">
+</head>
+<body>
+
+    <!-- Exercise Header -->
+    <div class="header">
+        <h1>Exercise 1: Alphabets and Numbers</h1>
+    </div>
+
+    <!-- Questions Container -->
+    <div class="questions-container">
+        <!-- Questions will be dynamically inserted here -->
+    </div>
+
+    <!-- Submit Button -->
+    <button id="submit-btn">Submit</button>
+
+    <!-- Results Display -->
+    <div id="results" style="display: none;">
+        <h2>Your Score: <span id="score"></span>/15</h2>
+        <p id="feedback"></p>
+    </div>
+
+    <script>
+        // Questions for Exercise 1: Alphabets and Numbers
+        const questions = [
+            // MCQ Questions
+            { type: "mcq", question: "What is the sign for 'A'?", options: ["A.png", "B.png", "C.png", "D.png"], answer: "A.png" },
+            { type: "mcq", question: "What is the sign for '1'?", options: ["1.jpg", "2.jpg", "3.jpg", "4.jpg"], answer: "1.jpg" },
+            { type: "mcq", question: "What is the sign for 'B'?", options: ["A.png", "B.png", "C.png", "D.png"], answer: "B.png" },
+            { type: "mcq", question: "What is the sign for '2'?", options: ["1.jpg", "2.jpg", "3.jpg", "4.jpg"], answer: "2.jpg" },
+            { type: "mcq", question: "What is the sign for 'C'?", options: ["A.png", "B.png", "C.png", "D.png"], answer: "C.png" },
+            { type: "mcq", question: "What is the sign for '3'?", options: ["1.jpg", "2.jpg", "3.jpg", "4.jpg"], answer: "3.jpg" },
+            { type: "mcq", question: "What is the sign for 'D'?", options: ["A.png", "B.png", "C.png", "D.png"], answer: "D.png" },
+            { type: "mcq", question: "What is the sign for '4'?", options: ["1.jpg", "2.jpg", "3.jpg", "4.jpg"], answer: "4.jpg" },
+            { type: "mcq", question: "What is the sign for 'E'?", options: ["E.png", "F.png", "G.png", "H.png"], answer: "E.png" },
+            { type: "mcq", question: "What is the sign for '5'?", options: ["5.jpg", "6.jpg", "7.jpg", "8.jpg"], answer: "5.jpg" },
+
+            // Fill-in-the-Blank Questions
+            { type: "fill", question: "What is this sign?", image: "F.png", answer: "F" },
+            { type: "fill", question: "What is this sign?", image: "6.jpg", answer: "6" },
+            { type: "fill", question: "What is this sign?", image: "G.png", answer: "G" },
+            { type: "fill", question: "What is this sign?", image: "7.jpg", answer: "7" },
+            { type: "fill", question: "What is this sign?", image: "H.png", answer: "H" }
+        ];
+
+        const questionsContainer = document.querySelector(".questions-container");
+        const submitBtn = document.getElementById("submit-btn");
+        const resultsDiv = document.getElementById("results");
+        const scoreSpan = document.getElementById("score");
+        const feedbackPara = document.getElementById("feedback");
+
+        // Function to render questions
+        function renderQuestions() {
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement("div");
+                questionDiv.className = "question";
+
+                const questionText = document.createElement("p");
+                questionText.textContent = `${index + 1}. ${q.question}`;
+                questionDiv.appendChild(questionText);
+
+                if (q.type === "mcq") {
+                    q.options.forEach(option => {
+                        const optionLabel = document.createElement("label");
+                        const optionInput = document.createElement("input");
+                        optionInput.type = "radio";
+                        optionInput.name = `question${index}`;
+                        optionInput.value = option;
+
+                        // Add image for MCQ options
+                        const optionImage = document.createElement("img");
+                        optionImage.src = `images/${option}`;
+                        optionImage.alt = option.replace(".png", "");
+                        optionImage.style.width = "50px"; // Adjust image size as needed
+
+                        optionLabel.appendChild(optionInput);
+                        optionLabel.appendChild(optionImage);
+                        questionDiv.appendChild(optionLabel);
+                    });
+                } else if (q.type === "fill") {
+                    // Add image for fill-in-the-blank questions
+                    const questionImage = document.createElement("img");
+                    questionImage.src = `images/${q.image}`;
+                    questionImage.alt = q.image.replace(".png", "");
+                    questionImage.style.width = "100px"; // Adjust image size as needed
+                    questionDiv.appendChild(questionImage);
+
+                    // Add input field for user's answer
+                    const input = document.createElement("input");
+                    input.type = "text";
+                    input.name = `question${index}`;
+                    input.placeholder = "Type your answer here";
+                    questionDiv.appendChild(input);
+                }
+
+                questionsContainer.appendChild(questionDiv);
+            });
+        }
+
+        // Function to calculate score
+        function calculateScore() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                if (q.type === "mcq") {
+                    // For MCQ questions, get the selected radio button value
+                    const userAnswer = document.querySelector(`input[name="question${index}"]:checked`)?.value;
+                    if (userAnswer === q.answer) {
+                        score++;
+                    }
+                } else if (q.type === "fill") {
+                    // For fill-in-the-blank questions, get the input value and trim whitespace
+                    const userAnswer = document.querySelector(`input[name="question${index}"]`)?.value.trim().toUpperCase();
+                    if (userAnswer === q.answer.toUpperCase()) {
+                        score++;
+                    }
+                }
+            });
+            return score;
+        }
+
+        // Event listener for submit button
+        submitBtn.addEventListener("click", () => {
+            const score = calculateScore();
+            scoreSpan.textContent = score;
+            feedbackPara.textContent = score >= 10 ? "Great job! Keep practicing!" : "Good effort! Try again!";
+            resultsDiv.style.display = "block";
+        });
+
+        // Render questions on page load
+        renderQuestions();
+    </script>
+
+</body>
+</html>

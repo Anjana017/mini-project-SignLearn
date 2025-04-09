@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 1 - Alphabets</title>
+    <link rel="stylesheet" href="styles1.css">
+</head>
+<body>
+
+    <!-- Level 1 Header -->
+    <div class="level-header">
+        <h2>Alphabets in Sign Language</h2>
+    </div>
+
+    <!-- Alphabet Learning Section -->
+    <div class="alphabet-container" id="learning-mode">
+        <h1 id="alphabet">A</h1>
+        <img id="sign-image" src="images/A.png" alt="Sign for A">
+    </div>
+
+    <!-- Quiz Mode Section (Initially Hidden) -->
+    <div class="quiz-container" id="quiz-mode" style="display: none;">
+        <h2>What letter is this?</h2>
+        <img id="quiz-image" src="" alt="Quiz Sign">
+        <div class="options">
+            <button class="option-btn" onclick="checkAnswer(this)">A</button>
+            <button class="option-btn" onclick="checkAnswer(this)">B</button>
+            <button class="option-btn" onclick="checkAnswer(this)">C</button>
+            <button class="option-btn" onclick="checkAnswer(this)">D</button>
+        </div>
+        <p id="quiz-result"></p>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="nav-buttons">
+        <button id="prev-btn">←</button>
+        <button id="next-btn">→</button>
+    </div>
+
+    <script src="script1.js"></script>
+</body>
+</html>

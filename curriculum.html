@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/yourkitcode.js" crossorigin="anonymous"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1 class="logo">Sign<span>Learn</span></h1>
+        <nav>
+            <ul>
+                <li><a href="login.html" class="login-button">Login</a></li>
+
+                <li><a href="index.html">Home</a></li>
+                <li><a href="curriculum.html">Curriculum</a></li>
+                <li><a href="dictionary.html">Dictionary</a></li>
+                <li><a href="progress.html">Progress</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Curriculum Section -->
+    <section id="curriculum" class="curriculum">
+        <h2>Structured Curriculum</h2>
+        <div class="curriculum-grid">
+            <div class="card" onclick="openPage('vid.html')">
+                <i class="fas fa-video"></i>
+                <h3>Video Tutorials</h3>
+                <p>Learn from expert instructors with step-by-step video lessons.</p>
+                <button class="cta-button">Watch Videos</button>
+            </div>
+            <div class="card" onclick="openPage('levels.html')">
+                <i class="fas fa-pencil-alt"></i>
+                <h3>Interactive Exercises</h3>
+                <p>Practice what you learn with hands-on exercises.</p>
+                <button class="cta-button">Start Exercises</button>
+            </div>
+            <div class="card" onclick="openPage('quiz.html')">
+                <i class="fas fa-question-circle"></i>
+                <h3>Quizzes</h3>
+                <p>Test your knowledge with quizzes after each lesson.</p>
+                <button class="cta-button">Take Quiz</button>
+            </div>
+        </div>
+    </section>
+
+<!-- Chat Support Button -->
+
+<!-- Chat Pop-up Window -->
+<div class="chat-popup" id="chatPopup">
+    <div class="chat-header">
+        Chat Support
+        <span style="float: right; cursor: pointer;" onclick="toggleChatPopup()">&times;</span>
+    </div>
+    <div class="chat-body" id="chatBody">
+        <p><strong>Support Bot:</strong> Hello! How can I assist you today?</p>
+    </div>
+    <div class="chat-footer">
+        <input type="text" id="chatInput" placeholder="Type your message...">
+        <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+    <script>
+        function openPage(url) {
+            window.location.href = url;
+        }
+    </script>
+
+</body>
+</html>

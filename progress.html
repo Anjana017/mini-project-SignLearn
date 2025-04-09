@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignLearn Progress Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #e50914;
+            --primary-light: #f01828;
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --card-bg: rgba(30, 30, 30, 0.7);
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--darker);
+            color: white;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 75% 30%, rgba(229, 9, 20, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 25% 70%, rgba(229, 9, 20, 0.1) 0%, transparent 50%);
+            overflow-x: hidden;
+        }
+        
+        /* Floating glass header */
+        .signlearn-header {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(229, 9, 20, 0.2);
+        }
+        
+        .signlearn-logo {
+            color: var(--primary);
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
+            position: relative;
+        }
+        
+        .signlearn-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+        }
+        
+        /* Main container with parallax effect */
+        .main-container {
+            padding: 40px 50px;
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+            perspective: 1000px;
+        }
+        
+        /* 3D Card Effect */
+        .tracker-section {
+            margin-bottom: 40px;
+            transition: transform 0.5s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .tracker-section:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Glassmorphism progress container */
+        .progress-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .progress-container:hover {
+            border-color: rgba(229, 9, 20, 0.3);
+            box-shadow: 0 8px 32px rgba(229, 9, 20, 0.2);
+        }
+        
+        .progress-title {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: white;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .progress-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            border-radius: 3px;
+        }
+        
+        /* Holographic progress bar */
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            margin: 20px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, 
+                var(--primary), 
+                var(--primary-light));
+            border-radius: 6px;
+            transition: width 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0.3) 0%, 
+                rgba(255, 255, 255, 0) 50%, 
+                rgba(255, 255, 255, 0.3) 100%);
+            animation: shine 2s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* Floating card grid */
+        .levels-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        /* 3D Card with hover effect */
+        .level-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transform-style: preserve-3d;
+        }
+        
+        .level-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 12px 30px rgba(229, 9, 20, 0.3);
+            border-color: rgba(229, 9, 20, 0.3);
+        }
+        
+        .level-number {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .level-number::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        /* Holographic button */
+        .record-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+        }
+        
+        .record-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            transition: all 0.5s ease;
+        }
+        
+        .record-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+        }
+        
+        .record-btn:hover::before {
+            left: 100%;
+        }
+        
+        /* Completed state with animation */
+        .completed {
+            position: relative;
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.3) !important;
+        }
+        
+        .completed::after {
+            content: "✓";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Quantum Circular Progress */
+        .overall-progress {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .circular-progress-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            margin-bottom: 30px;
+        }
+        
+        .circular-progress {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .circular-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                transparent 0deg,
+                transparent var(--progress, 0deg),
+                rgba(50, 50, 50, 0.8) var(--progress, 0deg),
+                rgba(50, 50, 50, 0.8) 360deg
+            );
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .circular-fill {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--primary) 0deg,
+                var(--primary-light) var(--progress, 0deg),
+                transparent var(--progress, 0deg),
+                transparent 360deg
+            );
+            filter: drop-shadow(0 0 10px var(--primary)) 
+                   drop-shadow(0 0 20px rgba(229, 9, 20, 0.7));
+            animation: neon-pulse 2s infinite alternate;
+        }
+        
+        .circular-center {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            background: var(--darker);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+        
+        .progress-value {
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .overall-progress-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+            position: relative;
+        }
+        
+        .overall-progress-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            border-radius: 3px;
+        }
+        
+        /* Particle background effect */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(229, 9, 20, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+        
+        /* Action buttons with depth */
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            grid-column: 1 / -1;
+            justify-content: center;
+        }
+        
+        .save-btn, .clear-btn {
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+        
+        .save-btn {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+        }
+        
+        .clear-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+        
+        .save-btn::before, .clear-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.2), 
+                rgba(255, 255, 255, 0));
+            z-index: -1;
+            transition: all 0.3s ease;
+        }
+        
+        .save-btn:hover, .clear-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .save-btn:hover::before, .clear-btn:hover::before {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.3), 
+                rgba(255, 255, 255, 0.1));
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 30px;
+            }
+            
+            .levels-container {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .circular-progress-container {
+                width: 240px;
+                height: 240px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .signlearn-header {
+                padding: 15px 20px;
+            }
+            
+            .signlearn-logo {
+                font-size: 2rem;
+            }
+            
+            .main-container {
+                padding: 20px;
+            }
+            
+            .progress-container {
+                padding: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .save-btn, .clear-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated particle background -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Floating glass header -->
+    <div class="signlearn-header">
+        <div class="signlearn-logo">SignLearn</div>
+    </div>
+    
+    <!-- Main content with 3D effects -->
+    <div class="main-container">
+        <!-- Quantum Circular Progress -->
+        <div class="overall-progress">
+            <div class="overall-progress-title">OVERALL PROGRESS</div>
+            <div class="circular-progress-container">
+                <div class="circular-progress">
+                    <div class="circular-bg"></div>
+                    <div class="circular-fill" id="circularProgressFill"></div>
+                    <div class="circular-center">
+                        <div class="progress-value" id="progressValue">0%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quizzes Section with glass cards -->
+        <div class="tracker-section">
+            <div class="progress-container">
+                <div class="progress-title">Progress in Quizzes</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="quizProgressFill"></div>
+                </div>
+                <div id="quizProgressText">0% Complete (0/6 Levels)</div>
+            </div>
+            
+            <div class="levels-container" id="quizContainer"></div>
+        </div>
+        
+        <!-- Interactive Exercises Section -->
+        <div class="tracker-section">
+            <div class="progress-container">
+                <div class="progress-title">Progress in INTERACTIVE EXERCISES</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="exercisesProgressFill"></div>
+                </div>
+                <div id="exercisesProgressText">0% Complete (0/5 Exercises)</div>
+            </div>
+            
+            <div class="levels-container" id="exercisesContainer"></div>
+        </div>
+        
+        <!-- Action buttons with depth effect -->
+        <div class="action-buttons">
+            <button class="save-btn" id="saveBtn">Save Changes</button>
+            <button class="clear-btn" id="clearBtn">Clear All Progress</button>
+        </div>
+    </div>
+    
+    <script>
+        // Constants
+        const totalQuizzes = 6;
+        const totalExercises = 5;
+        const totalActivities = totalQuizzes + totalExercises;
+        
+        // Create particle background
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = window.innerWidth < 768 ? 30 : 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random size
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random opacity
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                // Random animation duration and delay
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * -20;
+                particle.style.animation = `float ${duration}s ${delay}s infinite linear`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // DOM Elements
+        const quizContainer = document.getElementById('quizContainer');
+        const quizProgressFill = document.getElementById('quizProgressFill');
+        const quizProgressText = document.getElementById('quizProgressText');
+        const exercisesContainer = document.getElementById('exercisesContainer');
+        const exercisesProgressFill = document.getElementById('exercisesProgressFill');
+        const exercisesProgressText = document.getElementById('exercisesProgressText');
+        const saveBtn = document.getElementById('saveBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const circularProgressFill = document.getElementById('circularProgressFill');
+        const progressValue = document.getElementById('progressValue');
+        
+        // State
+        let completedQuizzes = 0;
+        let completedExercises = 0;
+        let quizStatus = Array(totalQuizzes).fill(false);
+        let exerciseStatus = Array(totalExercises).fill(false);
+        
+        // Initialize the app
+        function init() {
+            createParticles();
+            loadProgress();
+            createCards();
+            updateAllProgress();
+        }
+        
+        // Create quiz and exercise cards
+        function createCards() {
+            // Create Quiz Cards
+            quizContainer.innerHTML = '';
+            for (let i = 1; i <= totalQuizzes; i++) {
+                const card = document.createElement('div');
+                card.className = `level-card ${quizStatus[i-1] ? 'completed' : ''}`;
+                card.id = `quiz-${i}`;
+                card.innerHTML = `
+                    <div class="level-number">Level ${i}</div>
+                    <button class="record-btn" onclick="completeQuiz(${i})">Mark Complete</button>
+                `;
+                quizContainer.appendChild(card);
+            }
+            
+            // Create Exercise Cards
+            exercisesContainer.innerHTML = '';
+            for (let i = 1; i <= totalExercises; i++) {
+                const card = document.createElement('div');
+                card.className = `level-card ${exerciseStatus[i-1] ? 'completed' : ''}`;
+                card.id = `exercise-${i}`;
+                card.innerHTML = `
+                    <div class="level-number">Exercise ${i}</div>
+                    <button class="record-btn" onclick="completeExercise(${i})">Mark Complete</button>
+                `;
+                exercisesContainer.appendChild(card);
+            }
+        }
+        
+        // Load progress from localStorage
+        function loadProgress() {
+            const savedData = localStorage.getItem('signlearnProgress');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                quizStatus = data.quizStatus || Array(totalQuizzes).fill(false);
+                exerciseStatus = data.exerciseStatus || Array(totalExercises).fill(false);
+                
+                completedQuizzes = quizStatus.filter(status => status).length;
+                completedExercises = exerciseStatus.filter(status => status).length;
+            }
+        }
+        
+        // Save progress to localStorage
+        function saveProgress() {
+            const progressData = {
+                quizStatus,
+                exerciseStatus,
+                lastSaved: new Date().toISOString()
+            };
+            localStorage.setItem('signlearnProgress', JSON.stringify(progressData));
+            
+            // Show visual feedback
+            const feedback = document.createElement('div');
+            feedback.textContent = 'Progress Saved!';
+            feedback.style.position = 'fixed';
+            feedback.style.bottom = '20px';
+            feedback.style.left = '50%';
+            feedback.style.transform = 'translateX(-50%)';
+            feedback.style.backgroundColor = '#2ecc71';
+            feedback.style.color = 'white';
+            feedback.style.padding = '10px 20px';
+            feedback.style.borderRadius = '5px';
+            feedback.style.zIndex = '1000';
+            feedback.style.boxShadow = '0 4px 15px rgba(46, 204, 113, 0.4)';
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.style.opacity = '0';
+                feedback.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => feedback.remove(), 500);
+            }, 2000);
+        }
+        
+        // Clear all progress
+        function clearProgress() {
+            if (confirm('Are you sure you want to clear all progress? This cannot be undone.')) {
+                quizStatus = Array(totalQuizzes).fill(false);
+                exerciseStatus = Array(totalExercises).fill(false);
+                completedQuizzes = 0;
+                completedExercises = 0;
+                
+                localStorage.removeItem('signlearnProgress');
+                createCards();
+                updateAllProgress();
+                
+                // Show visual feedback
+                const feedback = document.createElement('div');
+                feedback.textContent = 'Progress Cleared!';
+                feedback.style.position = 'fixed';
+                feedback.style.bottom = '20px';
+                feedback.style.left = '50%';
+                feedback.style.transform = 'translateX(-50%)';
+                feedback.style.backgroundColor = '#e74c3c';
+                feedback.style.color = 'white';
+                feedback.style.padding = '10px 20px';
+                feedback.style.borderRadius = '5px';
+                feedback.style.zIndex = '1000';
+                feedback.style.boxShadow = '0 4px 15px rgba(231, 76, 60, 0.4)';
+                document.body.appendChild(feedback);
+                
+                setTimeout(() => {
+                    feedback.style.opacity = '0';
+                    feedback.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => feedback.remove(), 500);
+                }, 2000);
+            }
+        }
+        
+        // Update all progress indicators
+        function updateAllProgress() {
+            updateQuizProgress();
+            updateExerciseProgress();
+            updateOverallProgress();
+        }
+        
+        // Update quiz progress
+        function updateQuizProgress() {
+            const quizPercentage = (completedQuizzes / totalQuizzes) * 100;
+            quizProgressFill.style.width = `${quizPercentage}%`;
+            quizProgressText.textContent = `${Math.round(quizPercentage)}% Complete (${completedQuizzes}/${totalQuizzes} Levels)`;
+        }
+        
+        // Update exercise progress
+        function updateExerciseProgress() {
+            const exercisePercentage = (completedExercises / totalExercises) * 100;
+            exercisesProgressFill.style.width = `${exercisePercentage}%`;
+            exercisesProgressText.textContent = `${Math.round(exercisePercentage)}% Complete (${completedExercises}/${totalExercises} Exercises)`;
+        }
+        
+        // Update overall circular progress with neon effect
+        function updateOverallProgress() {
+            const totalCompleted = completedQuizzes + completedExercises;
+            const overallPercentage = (totalCompleted / totalActivities) * 100;
+            const roundedPercentage = Math.round(overallPercentage);
+            const degrees = (overallPercentage * 3.6);
+            
+            // Update circular progress
+            circularProgressFill.style.setProperty('--progress', `${degrees}deg`);
+            progressValue.textContent = `${roundedPercentage}%`;
+        }
+        
+        // Complete a quiz
+        function completeQuiz(quizNumber) {
+            const index = quizNumber - 1;
+            if (!quizStatus[index]) {
+                quizStatus[index] = true;
+                completedQuizzes++;
+                
+                const quizCard = document.getElementById(`quiz-${quizNumber}`);
+                quizCard.classList.add('completed');
+                
+                // Add completion animation
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = '#e50914';
+                confetti.style.borderRadius = '50%';
+                confetti.style.pointerEvents = 'none';
+                confetti.style.zIndex = '100';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.top = '0';
+                quizCard.appendChild(confetti);
+                
+                // Animate confetti
+                const animation = confetti.animate([
+                    { transform: 'translateY(0) scale(1)', opacity: 1 },
+                    { transform: 'translateY(-100px) scale(0.5)', opacity: 0 }
+                ], {
+                    duration: 1000,
+                    easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)'
+                });
+                
+                animation.onfinish = () => confetti.remove();
+                
+                updateAllProgress();
+            }
+        }
+        
+        // Complete an exercise
+        function completeExercise(exerciseNumber) {
+            const index = exerciseNumber - 1;
+            if (!exerciseStatus[index]) {
+                exerciseStatus[index] = true;
+                completedExercises++;
+                
+                const exerciseCard = document.getElementById(`exercise-${exerciseNumber}`);
+                exerciseCard.classList.add('completed');
+                
+                // Add completion animation
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = '#e50914';
+                confetti.style.borderRadius = '50%';
+                confetti.style.pointerEvents = 'none';
+                confetti.style.zIndex = '100';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.top = '0';
+                exerciseCard.appendChild(confetti);
+                
+                // Animate confetti
+                const animation = confetti.animate([
+                    { transform: 'translateY(0) scale(1)', opacity: 1 },
+                    { transform: 'translateY(-100px) scale(0.5)', opacity: 0 }
+                ], {
+                    duration: 1000,
+                    easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)'
+                });
+                
+                animation.onfinish = () => confetti.remove();
+                
+                updateAllProgress();
+            }
+        }
+        
+        // Event Listeners
+        saveBtn.addEventListener('click', saveProgress);
+        clearBtn.addEventListener('click', clearProgress);
+        
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>

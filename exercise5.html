@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 5: Emotions and Feelings</title>
+    <link rel="stylesheet" href="stylesquiz.css">
+</head>
+<body>
+
+    <!-- Exercise Header -->
+    <div class="header">
+        <h1>Exercise 5: Emotions and Feelings</h1>
+    </div>
+
+    <!-- Questions Container -->
+    <div class="questions-container">
+        <!-- Questions will be dynamically inserted here -->
+    </div>
+
+    <!-- Submit Button -->
+    <button id="submit-btn">Submit</button>
+
+    <!-- Results Display -->
+    <div id="results" style="display: none;">
+        <h2>Your Score: <span id="score"></span>/15</h2>
+        <p id="feedback"></p>
+    </div>
+
+    <script>
+        // Questions for Exercise 5: Emotions and Feelings
+        const questions = [
+            // MCQ Questions
+            { type: "mcq", question: "What is the sign for 'Happy'?", options: ["happy.mp4", "sad.mp4", "angry.mp4", "excited.mp4"], answer: "happy.mp4" },
+            { type: "mcq", question: "What is the sign for 'Sad'?", options: ["happy.mp4", "sad.mp4", "angry.mp4", "excited.mp4"], answer: "sad.mp4" },
+            { type: "mcq", question: "What is the sign for 'Angry'?", options: ["happy.mp4", "sad.mp4", "angry.mp4", "excited.mp4"], answer: "angry.mp4" },
+            { type: "mcq", question: "What is the sign for 'Excited'?", options: ["happy.mp4", "sad.mp4", "angry.mp4", "excited.mp4"], answer: "excited.mp4" },
+            { type: "mcq", question: "What is the sign for 'Scared'?", options: ["scared.mp4", "surprised.mp4", "tired.mp4", "bored.mp4"], answer: "scared.mp4" },
+            { type: "mcq", question: "What is the sign for 'Surprised'?", options: ["scared.mp4", "surprised.mp4", "tired.mp4", "bored.mp4"], answer: "surprised.mp4" },
+            { type: "mcq", question: "What is the sign for 'Tired'?", options: ["scared.mp4", "surprised.mp4", "tired.mp4", "bored.mp4"], answer: "tired.mp4" },
+            { type: "mcq", question: "What is the sign for 'Bored'?", options: ["scared.mp4", "surprised.mp4", "tired.mp4", "bored.mp4"], answer: "bored.mp4" },
+            { type: "mcq", question: "What is the sign for 'Confused'?", options: ["confused.mp4", "loved.mp4", "nervous.mp4", "proud.mp4"], answer: "confused.mp4" },
+            { type: "mcq", question: "What is the sign for 'Love'?", options: ["confused.mp4", "loved.mp4", "nervous.mp4", "proud.mp4"], answer: "loved.mp4" },
+
+            // Fill-in-the-Blank Questions
+            { type: "fill", question: "What is this sign?", video: "videos/nervous.mp4", answer: "Nervous" },
+            { type: "fill", question: "What is this sign?", video: "videos/proud.mp4", answer: "Proud" },
+            { type: "fill", question: "What is this sign?", video: "videos/jealous.mp4", answer: "Jealous" },
+            { type: "fill", question: "What is this sign?", video: "videos/curious.mp4", answer: "Curious" },
+            { type: "fill", question: "What is this sign?", video: "videos/confused.mp4", answer: "Confused" }
+        ];
+
+        const questionsContainer = document.querySelector(".questions-container");
+        const submitBtn = document.getElementById("submit-btn");
+        const resultsDiv = document.getElementById("results");
+        const scoreSpan = document.getElementById("score");
+        const feedbackPara = document.getElementById("feedback");
+
+ // Function to render questions
+function renderQuestions() {
+    questions.forEach((q, index) => {
+        const questionDiv = document.createElement("div");
+        questionDiv.className = "question";
+
+        const questionText = document.createElement("p");
+        questionText.textContent = `${index + 1}. ${q.question}`;
+        questionDiv.appendChild(questionText);
+
+        if (q.type === "mcq") {
+            q.options.forEach(option => {
+                const optionLabel = document.createElement("label");
+                const optionInput = document.createElement("input");
+                optionInput.type = "radio";
+                optionInput.name = `question${index}`;
+                optionInput.value = option;
+
+                // Add video for MCQ options with updated size
+                const optionVideo = document.createElement("video");
+                optionVideo.src = `videos/${option}`;
+                optionVideo.className = "mcq-video"; // Added class for styling
+                optionVideo.controls = true;
+
+                optionLabel.appendChild(optionInput);
+                optionLabel.appendChild(optionVideo);
+                questionDiv.appendChild(optionLabel);
+            });
+        } else if (q.type === "fill") {
+            // Add video for fill-in-the-blank questions with updated size
+            const questionVideo = document.createElement("video");
+            questionVideo.src = q.video;
+            questionVideo.className = "fill-video"; // Added class for styling
+            questionVideo.controls = true;
+
+            questionDiv.appendChild(questionVideo);
+
+            // Add input field for user's answer
+            const input = document.createElement("input");
+            input.type = "text";
+            input.name = `question${index}`;
+            input.placeholder = "Type your answer here";
+            questionDiv.appendChild(input);
+        }
+
+        questionsContainer.appendChild(questionDiv);
+    });
+}
+        // Function to calculate score
+        function calculateScore() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                if (q.type === "mcq") {
+                    // For MCQ questions, get the selected radio button value
+                    const userAnswer = document.querySelector(`input[name="question${index}"]:checked`)?.value;
+                    if (userAnswer === q.answer) {
+                        score++;
+                    }
+                } else if (q.type === "fill") {
+                    // For fill-in-the-blank questions, get the input value and trim whitespace
+                    const userAnswer = document.querySelector(`input[name="question${index}"]`)?.value.trim().toUpperCase();
+                    if (userAnswer === q.answer.toUpperCase()) {
+                        score++;
+                    }
+                }
+            });
+            return score;
+        }
+
+        // Event listener for submit button
+        submitBtn.addEventListener("click", () => {
+            const score = calculateScore();
+            scoreSpan.textContent = score;
+            feedbackPara.textContent = score >= 10 ? "Great job! Keep practicing!" : "Good effort! Try again!";
+            resultsDiv.style.display = "block";
+        });
+
+        // Render questions on page load
+        renderQuestions();
+    </script>
+
+</body>
+</html>

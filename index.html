@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Sign Language Learning Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>SignLearn</h1>
+        </div>
+        <nav>
+            <ul>
+                <!-- Show Logout and User Info when logged in -->
+                <li id="userInfo" style="display: none;">
+                    <span id="userName"></span>
+                    <button id="logoutButton" class="logout-button">Logout</button>
+                </li>
+                
+                <!-- Show Login button when not logged in -->
+                <li id="loginLink">
+                    <a href="login.html" class="login-button">Login</a>
+                </li>
+                <li><a href="#home">Home</a></li>
+                <li><a href="curriculum.html">Curriculum</a></li>
+                <li><a href="dictionary.html">Dictionary</a></li>
+                <li><a href="progress.html">Progress</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>Learn Sign Language Interactively</h2>
+            <p>Master sign language with AI-driven tools, video tutorials, and personalized feedback.</p>
+            <a href="#curriculum" class="cta-button">Continue Learning</a>
+        </div>
+    </section>
+
+    <!-- Curriculum Section -->
+    <section id="curriculum" class="curriculum">
+        <h2>Structured Curriculum</h2>
+        <div class="curriculum-grid">
+            <div class="card">
+                <i class="fas fa-video"></i>
+                <h3>Video Tutorials</h3>
+                <p>Learn from expert instructors with step-by-step video lessons.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-pencil-alt"></i>
+                <h3>Interactive Exercises</h3>
+                <p>Practice what you learn with hands-on exercises.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-question-circle"></i>
+                <h3>Quizzes</h3>
+                <p>Test your knowledge with quizzes after each lesson.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Pop-up Window -->
+    <div class="chat-popup" id="chatPopup">
+        <div class="chat-header">
+            Chat Support
+            <span style="float: right; cursor: pointer;" onclick="toggleChatPopup()">&times;</span>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <p><strong>Support Bot:</strong> Hello! How can I assist you today?</p>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chatInput" placeholder="Type your message...">
+            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 SignLearn. All rights reserved.</p>
+    </footer>
+
+    <!-- Firebase and Scripts -->
+    <script type="module">
+        // Import Firebase Auth and Firestore
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCclXIWg0aKRM73dPLfz7_z0TDmurAIyLY",
+            authDomain: "signlearn-67a59.firebaseapp.com",
+            projectId: "signlearn-67a59",
+            storageBucket: "signlearn-67a59.appspot.com",
+            messagingSenderId: "392875837556",
+            appId: "1:392875837556:web:7f98adfa24533500686921"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Check if the user is logged in
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is logged in
+                const userInfo = document.getElementById('userInfo');
+                const loginLink = document.getElementById('loginLink');
+                const userName = document.getElementById('userName');
+
+                // Show user info and hide login link
+                userInfo.style.display = 'block';
+                loginLink.style.display = 'none';
+
+                // Fetch user data from Firestore
+                const userDocRef = doc(db, "users", user.uid);
+                getDoc(userDocRef).then((doc) => {
+                    if (doc.exists()) {
+                        const userData = doc.data();
+                        const displayName = userData.firstName || user.email; // Use first name or email
+                        userName.textContent = displayName; // Update username near the logout button
+                    } else {
+                        console.log("No user data found");
+                    }
+                }).catch((error) => {
+                    console.error("Error fetching user data:", error);
+                });
+            } else {
+                // User is not logged in
+                const userInfo = document.getElementById('userInfo');
+                const loginLink = document.getElementById('loginLink');
+
+                // Hide user info and show login link
+                userInfo.style.display = 'none';
+                loginLink.style.display = 'block';
+            }
+        });
+
+        // Logout functionality
+        const logoutButton = document.getElementById('logoutButton');
+        logoutButton.addEventListener('click', () => {
+            signOut(auth).then(() => {
+                // Redirect to login page after logout
+                window.location.href = 'login.html';
+            }).catch((error) => {
+                console.error("Error signing out:", error);
+            });
+        });
+    </script>
+    <script src="script.js"></script>
+    <script>
+        window.chatbaseConfig = {
+            chatbotId: "P1cm3CiQrCAFdleNupqaY",
+        };
+        (function() {
+            var script = document.createElement("script");
+            script.src = "https://www.chatbase.co/embed.min.js";
+            script.async = true;
+            document.body.appendChild(script);
+        })();
+        </script>
+        
+
+    </body>
+</html>

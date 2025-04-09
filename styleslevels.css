@@ -1,0 +1,91 @@
+/* Base Styles */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #000;  /* Black background */
+    margin: 0;
+    padding: 0;
+    color: white; /* Default text color */
+}
+
+/* Header Styles */
+.level-header {
+    background-color: #e50914;
+    color: white;
+    padding: 1rem;
+}
+
+/* Word Display Styles */
+.word-display {
+    margin-top: 20px;
+    display: block; /* Default state - shown in learning mode */
+}
+
+#word, #phrase {
+    font-size: 5rem;
+    margin-bottom: 20px;
+    color: white;
+}
+
+/* Video Container Styles */
+.video-container {
+    margin-top: 20px;
+}
+
+#sign-video, #quiz-video {
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* Navigation Buttons */
+.nav-buttons {
+    margin-top: 20px;
+}
+
+.nav-buttons button {
+    font-size: 2rem;
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.nav-buttons button:hover {
+    background-color: #b20710;
+}
+
+/* Quiz Container Styles */
+.quiz-container {
+    display: none;
+    margin-top: 20px;
+}
+
+.quiz-container h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Quiz Options */
+.options {
+    margin-top: 15px;
+}
+
+.option-btn {
+    font-size: 1.5rem;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.option-btn:hover {
+    background-color: #b20710;
+}

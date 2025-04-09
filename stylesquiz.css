@@ -1,0 +1,62 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #141414;
+    color: #fff;
+    line-height: 1.6;
+}
+
+.header {
+    background-color: #e50914;
+    color: white;
+    padding: 1rem;
+}
+
+.exercise-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.exercise-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+    margin: 10px 0;
+    padding: 20px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.exercise-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.exercise-card h2 {
+    margin: 0;
+    color: #e50914;
+}
+
+.exercise-card p {
+    margin: 10px 0 0;
+    color: #555;
+}
+
+.mcq-video {
+    width: 300px; /* Larger video for MCQ */
+    border-radius: 10px;
+    border: 2px solid #4CAF50;
+    display: inline-block; 
+        margin: 4px auto; /* Center alignment */
+}
+
+.fill-video {
+    width: 180px; /* Fill-in-the-blank video size */
+    border: 2px solid #2196F3; /* Blue for Fill-in-the-Blank */
+}
+

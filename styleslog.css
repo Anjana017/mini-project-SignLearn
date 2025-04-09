@@ -1,0 +1,161 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background-color: #141414;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.container {
+    background: #fff;
+    width: 450px;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+    color: black;
+}
+
+.form-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1.2rem;
+    color: #e50914;
+}
+
+.input-group {
+    position: relative;
+    margin: 15px 0;
+}
+
+.input-group i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #555;
+}
+
+input {
+    width: 100%;
+    padding: 10px 10px 10px 35px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: #333;
+}
+
+input:focus {
+    border-color: #e50914;
+    outline: none;
+}
+
+label {
+    display: block;
+    font-size: 0.9rem;
+    color: #757575;
+    text-align: left;
+    margin-top: 5px;
+}
+
+.recover {
+    text-align: right;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.recover a {
+    text-decoration: none;
+    color: #e50914;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1.1rem;
+    color: white;
+    background: #e50914;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #a40610;
+}
+
+.or {
+    font-size: 1rem;
+    margin: 1rem 0;
+}
+
+.icons {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.icons i {
+    color: #e50914;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border: 2px solid #e50914;
+    transition: 0.3s;
+    margin: 0 10px;
+}
+
+.icons i:hover {
+    background: #e50914;
+    color: white;
+}
+
+.links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: black;
+    flex-direction: column;
+}
+
+.links p {
+    color: black;
+    margin-bottom: 5px;
+}
+
+#signUpButton, #signInButton {
+    background: none;
+    border: none;
+    color: #e50914;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+#signUpButton:hover, #signInButton:hover {
+    text-decoration: underline;
+}
+
+.messageDiv {
+    background-color: #e50914;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-align: center;
+    opacity: 1;
+}

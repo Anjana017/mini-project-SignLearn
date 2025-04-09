@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 2 - Numbers</title>
+    <link rel="stylesheet" href="styles1.css">
+</head>
+<body>
+
+    <!-- Level 2 Header -->
+    <div class="level-header">
+        <h2>Numbers in Sign Language</h2>
+    </div>
+
+    <!-- Number Learning Section -->
+    <div class="number-container" id="learning-mode">
+        <h1 id="number">0</h1>
+        <img id="sign-image" src="images/0.jpg" alt="Sign for 0">
+    </div>
+
+    <!-- Quiz Mode Section (Initially Hidden) -->
+    <div class="quiz-container" id="quiz-mode" style="display: none;">
+        <h2>What number is this?</h2>
+        <img id="quiz-image" src="" alt="Quiz Sign">
+        <div class="options">
+            <button class="option-btn" onclick="checkAnswer(this)">0</button>
+            <button class="option-btn" onclick="checkAnswer(this)">1</button>
+            <button class="option-btn" onclick="checkAnswer(this)">2</button>
+            <button class="option-btn" onclick="checkAnswer(this)">3</button>
+        </div>
+        <p id="quiz-result"></p>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="nav-buttons">
+        <button id="prev-btn">←</button>
+        <button id="next-btn">→</button>
+    </div>
+
+    <script src="script2.js"></script>
+</body>
+</html>
